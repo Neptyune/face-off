@@ -18,6 +18,12 @@ def index():
     return render_template("index.html")  # return index.html page
 
 
+# A leader board page with the top 10 scores
+@app.route("/leaderboard")
+def leaderboard():
+    return render_template("leaderboard.html")
+
+
 def generate_frames():
     while True:
         success, frame = camera.read()  # read the camera frame

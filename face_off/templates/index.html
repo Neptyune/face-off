@@ -1,12 +1,16 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="ie-edge" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
       integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
       crossorigin="anonymous"
     ></script>
+    <title>Face OFF!!</title>
   </head>
 
   <body class="bg-black flex text-white">
@@ -20,7 +24,8 @@
               var socket = io();
               socket.on("update_emotion", function (data) {
                 // console.log(data);
-                document.getElementById("happy").textContent = data.emotion.happy;
+                document.getElementById("happy").textContent =
+                  data.emotion.happy;
               });
             </script>
           </div>
@@ -29,10 +34,9 @@
           </div>
         </div>
         <div class="w-1/2 flex grow">
-          <img class="w-full my-auto" src="/video" alt="video feed">
+          <img class="w-full my-auto" src="/video" alt="video feed" />
         </div>
       </div>
-
       <div class="w-full h-12 justify-between flex flex-row">
         <button class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3">Save</button>
         <button class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3">

@@ -1,6 +1,8 @@
 import os
 from cv2.typing import MatLike
 from flask import Flask, json, render_template, Response
+import numpy as np
+from collections import deque
 from flask_socketio import SocketIO
 from typing import Dict, TypeAlias
 from deepface import DeepFace
@@ -16,9 +18,9 @@ EMOTIONS = ("angry", "disgust", "fear", "happy", "sad", "surprise", "neutral")
 def save_frame(frame: MatLike, emotion: str, score: float):
     """Saves the given frame"""
     file_name = os.path.join(IMAGES_PATH, f"{emotion}-{round(score, 8)}.jpg")
-    print(frame)
-    plt.imshow(frame)
-    plt.show()
+    # print(frame)
+    # plt.imshow(frame)
+    # plt.show()
     print("Save result:", cv2.imwrite(file_name, frame))
     return file_name
 
@@ -75,7 +77,6 @@ class Leaderboard:
 
 
 app = Flask(__name__)
-# app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app)
 
 camera = cv2.VideoCapture(0)
@@ -119,24 +120,62 @@ def video():
 
 
 def update_emotions():
+    emotion_history = {
+        "angry": deque(maxlen=3),
+        "disgust": deque(maxlen=3),
+        "fear": deque(maxlen=3),
+        "happy": deque(maxlen=3),
+        "sad": deque(maxlen=3),
+        "surprise": deque(maxlen=3),
+        "neutral": deque(maxlen=3),
+    }
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
             print("Camera not working!")
         else:
+            # get the size of the frame
+            # height, width, channels = frame.shape
+            # print(height, width, channels)
+            frame = frame[100:400, 200:500]
+            # height, width, channels = frame.shape
+            # print(height, width, channels)
             result = DeepFace.analyze(
                 frame, enforce_detection=False, actions=["emotion"]
             )[0]
             if len(result):
                 emotion = result["dominant_emotion"]
+
+                processed_emotions, emotion_history = process_emotions(
+                    result["emotion"], emotion_history
+                )
+
                 leaderboard.handle_new_score(
                     frame,
                     emotion,
-                    result["emotion"][emotion],
+                    processed_emotions[emotion],
                 )
-                socketio.emit("update_emotion", {"emotion": result["emotion"]})
+
+                socketio.emit("update_emotion", {"emotion": processed_emotions})
 
         # socketio.sleep(1) # If enabled the number will lag behind the camera
+
+
+def process_emotions(emotion_dict: Dict[str, float], emotion_history):
+    """Processes the scores to use the average of the last 3 data points along with a exponential function"""
+    processed_emotion_dict = {}
+    for emotion in emotion_dict:
+        processed_score = process_raw_score(emotion_dict[emotion])
+        emotion_history[emotion].append(processed_score)
+        processed_emotion_dict[emotion] = sum(emotion_history[emotion]) / len(
+            emotion_history[emotion]
+        )
+    return processed_emotion_dict, emotion_history
+
+
+def process_raw_score(x):
+    scaling_factor = 0.1 / np.e
+    return 100 - 100 * np.exp(-scaling_factor * x)
 
 
 if __name__ == "__main__":

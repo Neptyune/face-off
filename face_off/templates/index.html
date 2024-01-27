@@ -1,48 +1,147 @@
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="ie-edge" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
-      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+        integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Face OFF!!</title>
-  </head>
+</head>
 
-  <body class="bg-black flex text-white">
+<body class="bg-black flex text-white">
     <div class="flex flex-col h-screen">
-      <div class="flex flex-row w-screen grow">
-        <div class="w-1/2 flex flex-col grow">
-          <div class="grow">
-            <h1>Stats</h1>
-            <p id="happy">0</p>
-            <script>
-              var socket = io();
-              socket.on("update_emotion", function (data) {
-                // console.log(data);
-                document.getElementById("happy").textContent =
-                  data.emotion.happy;
-              });
-            </script>
-          </div>
-          <div class="grow">
-            <h1>Another Image</h1>
-          </div>
+        <div class="flex flex-row w-screen grow">
+            <div class="w-1/2 flex flex-col grow">
+                <div class="grow">
+                    <h1 class="text-xl text-center">Stats</h1>
+                    <div class="">
+                        <div class="flex justify-center">
+                            <p class="text-3xl" id="happy-score">0</p>
+                            <p class="text-3xl" id="sad-score">0</p>
+                        </div>
+                        <canvas id="happy-chart"></canvas>
+                        <script>
+                            var socket = io();
+                            var happyData = [];
+                            var sadData = [];
+                            var happySadLabels = [];
+                            var happyChart = new Chart(document.getElementById('happy-chart'), {
+                                type: 'line',
+                                data: {
+                                    labels: happySadLabels,
+                                    datasets: [{
+                                        label: 'Happiness',
+                                        data: happyData,
+                                        fill: false,
+                                        borderColor: 'rgb(75, 192, 192)',
+                                        tension: 0.1
+                                    },
+                                    {
+                                        label: 'Sadness',
+                                        data: sadData,
+                                        fill: false,
+                                        borderColor: 'rgb(192, 75, 75)',
+                                        tension: 0.1
+                                    }]
+                                }
+                            });
+
+                            socket.on("update_emotion", function (data) {
+                                var happyScore = document.getElementById("happy-score");
+                                happyScore.textContent = data.emotion.happy.toFixed(2) + "%";
+
+                                var sadScore = document.getElementById("sad-score");
+                                sadScore.textContent = data.emotion.sad.toFixed(2) + "%";
+
+                                // Update the chart
+                                happyData.push(data.emotion.happy.toFixed(2));
+                                sadData.push(data.emotion.sad.toFixed(2));
+                                happySadLabels.push('');
+
+                                // Keep only the last 200 values
+                                if (happyData.length > 50) {
+                                    happyData.shift();
+                                    sadData.shift();
+                                    happySadLabels.shift();
+                                }
+
+                                happyChart.update();
+                            });
+                        </script>
+                    </div>
+                </div>
+                <div class="grow">
+                    <h1 class="text-xl text-center">Stats</h1>
+                    <div class="flex justify-center">
+                        <p class="text-3xl" id="surprise-score">0</p>
+                        <p class="text-3xl" id="neutral-score">0</p>
+                    </div>
+                    <canvas id="surprise-neutral-chart"></canvas>
+                    <script>
+                        var surpriseData = [];
+                        var neutralData = [];
+                        var surpriseNeutralLabels = [];
+                        var surpriseNeutralChart = new Chart(document.getElementById('surprise-neutral-chart'), {
+                            type: 'line',
+                            data: {
+                                labels: surpriseNeutralLabels,
+                                datasets: [{
+                                    label: 'Surprise',
+                                    data: surpriseData,
+                                    fill: false,
+                                    borderColor: 'rgb(192, 192, 75)',
+                                    tension: 0.1
+                                },
+                                {
+                                    label: 'Neutral',
+                                    data: neutralData,
+                                    fill: false,
+                                    borderColor: 'rgb(75, 75, 75)',
+                                    tension: 0.1
+                                }]
+                            }
+                        });
+
+                        socket.on("update_emotion", function (data) {
+                            var surpriseScore = document.getElementById("surprise-score");
+                            surpriseScore.textContent = data.emotion.surprise.toFixed(4) + "%";
+
+                            var neutralScore = document.getElementById("neutral-score");
+                            neutralScore.textContent = data.emotion.neutral.toFixed(4) + "%";
+
+                            // Update the chart
+                            surpriseData.push(data.emotion.surprise);
+                            neutralData.push(data.emotion.neutral);
+                            surpriseNeutralLabels.push('');
+
+                            // Keep only the last 100 values
+                            if (surpriseData.length > 100) {
+                                surpriseData.shift();
+                                neutralData.shift();
+                                surpriseNeutralLabels.shift();
+                            }
+
+                            surpriseNeutralChart.update();
+                        });
+                    </script>
+                </div>
+                </div>
+            <div class="w-1/2 flex grow">
+                <img class="w-full my-auto" src="/video" alt="video feed" />
+            </div>
         </div>
-        <div class="w-1/2 flex grow">
-          <img class="w-full my-auto" src="/video" alt="video feed" />
+        <div class="w-full h-12 justify-between flex flex-row">
+            <button class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3">Save</button>
+            <button class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3">
+                Reset
+            </button>
         </div>
-      </div>
-      <div class="w-full h-12 justify-between flex flex-row">
-        <button class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3">Save</button>
-        <button class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3">
-          Reset
-        </button>
-      </div>
     </div>
-  </body>
+</body>
+
 </html>

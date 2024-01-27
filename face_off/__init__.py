@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 
 def generate_frames():
-    camera = cv2.VideoCapture(4)
+    camera = cv2.VideoCapture(0)
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
@@ -22,6 +22,20 @@ def generate_frames():
 def index():
     return render_template("index.html")  # return index.html page
 
+@app.route("/singleboard")
+def singleboard():
+    scores = {
+        'Alice': 75.5,
+        'Bob': 92.3,
+        'Charlie': 88.0,
+        'David': 65.8,
+        'Eva': 78.9,
+        'Annie': 100.0,
+        'Nick': 10
+    }
+    sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
+
+    return render_template("singleboard.html", len = len(scores.keys()), names = list(sorted_scores.keys()), scores = list(sorted_scores.values()), emotion = "Happy")
 
 @app.route("/video")
 def video():

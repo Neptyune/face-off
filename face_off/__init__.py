@@ -26,7 +26,6 @@ def leaderboard():
 
 
 def generate_frames():
-    camera = cv2.VideoCapture(0)
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
@@ -37,11 +36,6 @@ def generate_frames():
             yield (
                 b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
             )  # concat frame one by one and show result
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")  # return index.html page
 
 @app.route("/singleboard")
 def singleboard():

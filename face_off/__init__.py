@@ -111,6 +111,20 @@ def generate_frames():
                 b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
             )  # concat frame one by one and show result
 
+@app.route("/singleboard")
+def singleboard():
+    scores = {
+        'Alice': 75.5,
+        'Bob': 92.3,
+        'Charlie': 88.0,
+        'David': 65.8,
+        'Eva': 78.9,
+        'Annie': 100.0,
+        'Nick': 10
+    }
+    sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
+
+    return render_template("singleboard.html", len = len(scores.keys()), names = list(sorted_scores.keys()), scores = list(sorted_scores.values()), emotion = "Happy")
 
 @app.route("/video")
 def video():

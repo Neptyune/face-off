@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "face-off"
+version = "0.1.0"
+description = ""
+authors = ["Nick Michau <70205169+NOM1989@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.9"
+deepface = "^0.0.83"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

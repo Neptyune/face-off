@@ -2,33 +2,57 @@
 <html>
 
 <head>
-  <title>Face OFF!!</title>
+    <title>Face OFF!!</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-  <body class="bg-black flex text-white">
+
+<body class="bg-black flex text-white">
     <div class="mx-auto p-10">
         <h1 class="text-center text-3xl my-10 text-slate-100">Leader Board for {{emotion}}</h1>
-        <div class="content-evenly grid grid-cols-3  place-items-center p-10">
-            {%for i in range(0, 3)%}
-                <div class="text-center p-5">
-                <img src="{{ url_for('static', filename='images/Nick.jpg') }}" alt="supposed to be Nick" width="300">
-                <p class="p-5 text-xl">{{i+1}}. {{names[i]}}: {{scores[i]}}%</p>
+        <div class="">
+            <div class="text-center p-5 mb-5 items-center">
+                <p class="p-5 my-2 pb-5 text-xl text-center text-white font-bold">1. {{names[0]}}: {{scores[0]}}%</p>
+                <img class="mx-auto rounded-md border-2 border-yellow-300 scale-125 shadow-[0_25px_60px_15px_rgba(245,206,66,0.7)]"
+                    src="{{ url_for('static', filename='images/Nick.jpg') }}" alt="supposed to be Nick" width="300">
+            </div>
+            <div class="flex flex-row">
+                <div class="text-center p-5 items-center">
+                    <img class="mx-auto rounded-md border-2 border-gray-400 scale-110 shadow-[0_25px_50px_-10px_rgba(179,175,173,0.7)]"
+                        src="{{ url_for('static', filename='images/Nick.jpg') }}" alt="supposed to be Nick" width="300"
+                        width="300">
+                    <p class="p-5 text-xl text-center">2. {{names[1]}}: {{scores[1]}}%</p>
                 </div>
-            {%endfor%}
+                <div class="text-center p-5 items-center">
+                    <img class="mx-auto rounded-md border-2 border-orange-800 shadow-[0_25px_50px_-10px_rgba(173,104,64,0.7)]"
+                        src="{{ url_for('static', filename='images/Nick.jpg') }}" alt="supposed to be Nick" width="300"
+                        width="300">
+                    <p class="p-5 text-xl text-center">3. {{names[2]}}: {{scores[2]}}%</p>
+                </div>
+            </div>
         </div>
         <div class="mt-5 text-center align-middle ">
-        <ol>
-            {%for i in range(3, len)%}
-            <hr class="border-slate-500">
-            <li>
-                <div class="place-items-center grid grid-cols-2">
-                <img src="{{ url_for('static', filename='images/Nick.jpg') }}" alt="supposed to be Nick" width="300" class="p-2">
-                <p class="p-5 text-xl">{{i+1}}. {{names[i]}}: {{scores[i]}}%</p>
-                </div>
-            </li>
-            {%endfor%}
-        </ol>
+            <ol>
+                {%for i in range(3, len)%}
+                <hr class="border-slate-500">
+                <li>
+                    <div class="place-items-center my-5 grid grid-cols-2">
+                        <img class=" rounded-md" src="{{ url_for('static', filename='images/Nick.jpg') }}"
+                            alt="supposed to be Nick" width="300" class="p-2">
+                        <p class="p-5 text-xl">{{i+1}}. {{names[i]}}: {{scores[i]}}%</p>
+                    </div>
+                </li>
+                {%endfor%}
+            </ol>
         </div>
     </div>
-  </body>
+</body>
+<style>
+    .gold {
+        color: white;
+        transition: all;
+        transition-duration: 200ms;
+        text-shadow: 0 0 5px #fff;
+    }
+</style>
+
 </html>

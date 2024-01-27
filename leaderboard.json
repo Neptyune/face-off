@@ -1,33 +1,9 @@
 {
-    "angry": {
-        "81.55338168144226": "/home/NOM/Neptyune/face-off/images/angry-81.55338168.jpg",
-        "81.65836334228516": "/home/NOM/Neptyune/face-off/images/angry-81.65836334.jpg",
-        "86.03885936273821": "/home/NOM/Neptyune/face-off/images/angry-86.03885936.jpg"
-    },
+    "angry": {},
     "disgust": {},
-    "fear": {
-        "99.86929297447205": "/home/NOM/Neptyune/face-off/images/fear-99.86929297.jpg",
-        "99.97941851615906": "/home/NOM/Neptyune/face-off/images/fear-99.97941852.jpg",
-        "99.76147418940683": "/home/NOM/Neptyune/face-off/images/fear-99.76147419.jpg"
-    },
-    "happy": {
-        "100.0": "/home/NOM/Neptyune/face-off/images/happy-100.0.jpg",
-        "99.9996721744342": "/home/NOM/Neptyune/face-off/images/happy-99.99967217.jpg",
-        "99.99881982803345": "/home/NOM/Neptyune/face-off/images/happy-99.99881983.jpg"
-    },
-    "sad": {
-        "99.51863286010223": "/home/NOM/Neptyune/face-off/images/sad-99.51863286.jpg",
-        "99.95970129966736": "/home/NOM/Neptyune/face-off/images/sad-99.9597013.jpg",
-        "99.9956488609314": "/home/NOM/Neptyune/face-off/images/sad-99.99564886.jpg"
-    },
-    "surprise": {
-        "99.80236291885376": "/home/NOM/Neptyune/face-off/images/surprise-99.80236292.jpg",
-        "99.99852180480957": "/home/NOM/Neptyune/face-off/images/surprise-99.9985218.jpg",
-        "99.94516968727112": "/home/NOM/Neptyune/face-off/images/surprise-99.94516969.jpg"
-    },
-    "neutral": {
-        "99.797123670578": "/home/NOM/Neptyune/face-off/images/neutral-99.79712367.jpg",
-        "99.91331696510315": "/home/NOM/Neptyune/face-off/images/neutral-99.91331697.jpg",
-        "99.97778534889221": "/home/NOM/Neptyune/face-off/images/neutral-99.97778535.jpg"
-    }
+    "fear": {},
+    "happy": {},
+    "sad": {},
+    "surprise": {},
+    "neutral": {}
 }

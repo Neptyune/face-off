@@ -1,11 +1,11 @@
 from flask import Flask, render_template, Response
 import cv2
+import numpy as np
 from flask_socketio import SocketIO
 from deepface import DeepFace
 
 
 app = Flask(__name__)
-# app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app)
 
 camera = cv2.VideoCapture(0)
@@ -56,6 +56,10 @@ def update_emotions():
             socketio.emit("update_emotion", {"emotion": result[0]["emotion"]})
 
         # socketio.sleep(1) # If enabled the number will lag behind the camera
+
+
+def process_raw_score(x):
+    return 100 - 100 * np.exp(-0.05 * x)
 
 
 if __name__ == "__main__":

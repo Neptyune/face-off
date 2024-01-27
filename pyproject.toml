@@ -11,6 +11,7 @@ deepface = "^0.0.83"
 opencv-python = "^4.9.0.80"
 flask = "^3.0.1"
 flask-socketio = "^5.3.6"
+matplotlib = "^3.8.2"
 
 
 [build-system]

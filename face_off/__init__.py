@@ -22,6 +22,10 @@ def generate_frames():
 def index():
     return render_template("index.html")  # return index.html page
 
+# A leader board page with the top 10 scores
+@app.route("/leaderboard")
+def leaderboard():
+    return render_template("leaderboard.html")
 
 @app.route("/video")
 def video():

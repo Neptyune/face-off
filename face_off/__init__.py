@@ -18,7 +18,7 @@ def save_frame(frame: MatLike, emotion: str, score: float):
     """Saves the given frame"""
     file_name = os.path.join(IMAGES_PATH, f"{emotion}-{round(score, 8)}.jpg")
 
-    print("Save result:", cv2.imwrite(file_name, frame))
+    cv2.imwrite(file_name, frame)
     return file_name
 
 
@@ -26,7 +26,8 @@ def remove_frame(file_name: str):
     try:
         os.remove(os.path.join(IMAGES_PATH, file_name))
     except FileNotFoundError:
-        print("WARN - File name miss-match, frame was not removed")
+        pass
+        # print("WARN - File name miss-match, frame was not removed")
 
 
 EmotionScores: TypeAlias = Dict[
@@ -37,13 +38,27 @@ EmotionScores: TypeAlias = Dict[
 class Tracker:
     def __init__(self) -> None:
         self.scores_and_frames: Dict[str, Tuple[float, MatLike]] = {}
+        self.highscores: Dict[str, float] = {
+            "angry": 0,
+            "disgust": 0,
+            "fear": 0,
+            "happy": 0,
+            "sad": 0,
+            "surprise": 0,
+            "neutral": 0,
+        }
 
     def handle_new_score(self, frame: MatLike, emotion: str, new_score: float):
         try:
             if new_score > self.scores_and_frames[emotion][0]:
                 self.scores_and_frames[emotion] = (new_score, frame)
+                self.highscores[emotion] = new_score
         except KeyError:
             self.scores_and_frames[emotion] = (new_score, frame)
+            self.highscores[emotion] = new_score
+
+    def get_highs(self):
+        return self.highscores
 
     def clear(self):
         self.scores_and_frames = {}
@@ -199,7 +214,10 @@ def update_emotions():
                     processed_emotions[emotion],
                 )
 
-                socketio.emit("update_emotion", {"emotion": processed_emotions})
+                socketio.emit(
+                    "update_emotion",
+                    {"emotion": processed_emotions, "highscores": tracker.get_highs()},
+                )
 
         # socketio.sleep(1) # If enabled the number will lag behind the camera
 
@@ -223,7 +241,10 @@ def process_raw_score(x):
 
 @socketio.on("save")
 def save_name_scores(data):
-    print(f"New Highscore for {data['data']}:", leaderboard.update_and_save(tracker, data["data"]))
+    print(
+        f"New Highscore for {data['data']}:",
+        leaderboard.update_and_save(tracker, data["data"]),
+    )
     tracker.clear()
 
 
@@ -233,7 +254,7 @@ if __name__ == "__main__":
         socketio.run(app, debug=False, use_reloader=False, log_output=False)
     finally:
         camera.release()
-        print("\nApplication exited and camera released")
+        print("\nCamera released, saving leaderboard.")
 
 
 # class Emotion(Enum):

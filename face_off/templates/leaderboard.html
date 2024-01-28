@@ -26,17 +26,10 @@
                 {%for i in range(0, 3)%}
                 <div
                     class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
-            <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['happy'][i]) }}"
-                            alt="supposed to be Nick" width="300" class="p-2">
+                    <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['happy'][i]) }}"
+                        alt="image" width="300" class="p-2">
                 </div>
                 {%endfor%}
-
-
-                <div
-                    class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename='images/Nick.jpg') }}"
-                            alt="supposed to be Nick" width="300" class="p-2">
-                </div>
             </div>
 
             <div class="flex flex-col space-y-5">
@@ -50,11 +43,13 @@
                         Sad
                     </div>
                 </div>
+                {%for i in range(0, 3)%}
                 <div
                     class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename='images/Nick.jpg') }}"
-                            alt="supposed to be Nick" width="300" class="p-2">
+                    <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['sad'][i]) }}"
+                        alt="image" width="300" class="p-2">
                 </div>
+                {%endfor%}
             </div>
 
 
@@ -69,11 +64,13 @@
                         Angry
                     </div>
                 </div>
+                {%for i in range(0, 3)%}
                 <div
                     class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename='images/Nick.jpg') }}"
-                            alt="supposed to be Nick" width="300" class="p-2">
+                    <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['angry'][i]) }}"
+                        alt="image" width="300" class="p-2">
                 </div>
+                {%endfor%}
             </div>
 
             <div class="flex flex-col space-y-5">
@@ -87,11 +84,13 @@
                         Fear
                     </div>
                 </div>
+                {%for i in range(0, 3)%}
                 <div
                     class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename='images/Nick.jpg') }}"
-                            alt="supposed to be Nick" width="300" class="p-2">
+                    <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['fear'][i]) }}"
+                        alt="image" width="300" class="p-2">
                 </div>
+                {%endfor%}
             </div>
 
             <div class="flex flex-col space-y-5">
@@ -105,11 +104,13 @@
                         Surprise
                     </div>
                 </div>
+                {%for i in range(0, 3)%}
                 <div
                     class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename='images/Nick.jpg') }}"
-                            alt="supposed to be Nick" width="300" class="p-2">
+                    <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['surprise'][i]) }}"
+                        alt="image" width="300" class="p-2">
                 </div>
+                {%endfor%}
             </div>
 
             <div class="flex flex-col space-y-5">
@@ -123,11 +124,13 @@
                         Disgust
                     </div>
                 </div>
+                {%for i in range(0, 3)%}
                 <div
                     class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename='images/Nick.jpg') }}"
-                            alt="supposed to be Nick" width="300" class="p-2">
+                    <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['disgust'][i]) }}"
+                        alt="image" width="300" class="p-2">
                 </div>
+                {%endfor%}
             </div>
 
             <div class="flex flex-col space-y-5">
@@ -141,11 +144,13 @@
                         Neutral
                     </div>
                 </div>
+                {%for i in range(0, 3)%}
                 <div
                     class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename='images/Nick.jpg') }}"
-                            alt="supposed to be Nick" width="300" class="p-2">
+                    <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['neutral'][i]) }}"
+                        alt="image" width="300" class="p-2">
                 </div>
+                {%endfor%}
             </div>
         </div>
     </div>

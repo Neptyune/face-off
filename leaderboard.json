@@ -1,5 +1,10 @@
 {
-    "angry": {},
+    "angry": {
+        "27.111831912169365": [
+            "images/angry-27.11183191.jpg",
+            "John Smith"
+        ]
+    },
     "disgust": {},
     "fear": {
         "88.64972889150977": [
@@ -26,5 +31,9 @@
         ]
     },
     "surprise": {
+        "97.47090913467173": [
+            "images/surprise-97.47090913.jpg",
+            "John Smith"
+        ]
     }
 }

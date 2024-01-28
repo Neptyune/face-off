@@ -18,7 +18,7 @@ def save_frame(frame: MatLike, emotion: str, score: float):
     """Saves the given frame"""
     file_name = os.path.join(IMAGES_PATH, f"{emotion}-{round(score, 8)}.jpg")
 
-    print("Save result:", cv2.imwrite(file_name, frame))
+    cv2.imwrite(file_name, frame)
     return file_name
 
 
@@ -26,7 +26,8 @@ def remove_frame(file_name: str):
     try:
         os.remove(os.path.join(IMAGES_PATH, file_name))
     except FileNotFoundError:
-        print("WARN - File name miss-match, frame was not removed")
+        pass
+        # print("WARN - File name miss-match, frame was not removed")
 
 
 EmotionScores: TypeAlias = Dict[
@@ -233,7 +234,7 @@ if __name__ == "__main__":
         socketio.run(app, debug=False, use_reloader=False, log_output=False)
     finally:
         camera.release()
-        print("\nApplication exited and camera released")
+        print("\nCamera released, saving leaderboard.")
 
 
 # class Emotion(Enum):

@@ -1,9 +1,30 @@
 {
     "angry": {},
     "disgust": {},
-    "fear": {},
-    "happy": {},
-    "sad": {},
-    "surprise": {},
-    "neutral": {}
+    "fear": {
+        "88.64972889150977": [
+            "images/fear-88.64972889.jpg",
+            "John Smith"
+        ]
+    },
+    "happy": {
+        "97.45322165866367": [
+            "images/happy-97.45322166.jpg",
+            "John Smith"
+        ]
+    },
+    "neutral": {
+        "97.4554948591638": [
+            "images/neutral-97.45549486.jpg",
+            "John Smith"
+        ]
+    },
+    "sad": {
+        "91.70619853787463": [
+            "images/sad-91.70619854.jpg",
+            "John Smith"
+        ]
+    },
+    "surprise": {
+    }
 }

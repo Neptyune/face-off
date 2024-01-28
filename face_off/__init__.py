@@ -4,23 +4,20 @@ from flask import Flask, json, render_template, Response
 import numpy as np
 from collections import deque
 from flask_socketio import SocketIO
-from typing import Dict, TypeAlias
+from typing import Dict, Tuple, TypeAlias
 from deepface import DeepFace
 import cv2
-import matplotlib.pyplot as plt
 from time import time
 
-IMAGES_PATH = os.path.join(os.getcwd(), "images")
-print(IMAGES_PATH)
+
+IMAGES_PATH = "images"
 EMOTIONS = ("angry", "disgust", "fear", "happy", "sad", "surprise", "neutral")
 
 
 def save_frame(frame: MatLike, emotion: str, score: float):
     """Saves the given frame"""
     file_name = os.path.join(IMAGES_PATH, f"{emotion}-{round(score, 8)}.jpg")
-    # print(frame)
-    # plt.imshow(frame)
-    # plt.show()
+
     print("Save result:", cv2.imwrite(file_name, frame))
     return file_name
 
@@ -33,8 +30,23 @@ def remove_frame(file_name: str):
 
 
 EmotionScores: TypeAlias = Dict[
-    str, str
+    str, Tuple[str, str]
 ]  # Reality its Dict[float, str] but json makes it a string
+
+
+class Tracker:
+    def __init__(self) -> None:
+        self.scores_and_frames: Dict[str, Tuple[float, MatLike]] = {}
+
+    def handle_new_score(self, frame: MatLike, emotion: str, new_score: float):
+        try:
+            if new_score > self.scores_and_frames[emotion][0]:
+                self.scores_and_frames[emotion] = (new_score, frame)
+        except KeyError:
+            self.scores_and_frames[emotion] = (new_score, frame)
+
+    def clear(self):
+        self.scores_and_frames = {}
 
 
 class Leaderboard:
@@ -45,35 +57,42 @@ class Leaderboard:
         self.leaderboard: Dict[str, EmotionScores] = {}
         self.last_write = 0
 
-    def generate_leaderboard_file(self):
+    def generate_file(self):
         emotion_scores = {}
         for emotion in EMOTIONS:
             emotion_scores[emotion] = {}
         with open(self.leaderboard_file, "w") as fp:
             json.dump(emotion_scores, fp, indent=4)
 
-    def load_leaderboard(self):
+    def load(self):
         with open(self.leaderboard_file, "r") as fp:
             self.leaderboard = json.load(fp)
 
-    def save_leaderboard(self):
-        with open(self.leaderboard_file, "w") as fp:
-            json.dump(self.leaderboard, fp, indent=4)
+    def update_and_save(self, tracker: Tracker, name: str):
+        new_highscore = False
+        for emotion in tracker.scores_and_frames:
+            emotion_scores: EmotionScores = self.leaderboard[emotion]
+            tracked_emotion = tracker.scores_and_frames[emotion]  # (score, frame)
 
-    def handle_new_score(self, frame: MatLike, emotion: str, new_score: float):
-        emotion_scores: EmotionScores = self.leaderboard[emotion]
+            lowest_score = (
+                min(map(float, emotion_scores.keys())) if emotion_scores else 0.0
+            )
+            if tracked_emotion[0] >= lowest_score and time() - self.last_write >= 0.5:
+                file_name = save_frame(tracked_emotion[1], emotion, tracked_emotion[0])
+                emotion_scores[str(tracked_emotion[0])] = (file_name, name)
+                new_highscore = True
 
-        lowest_score = min(map(float, emotion_scores.keys())) if emotion_scores else 0.0
-        if new_score >= lowest_score and time() - self.last_write >= 0.5:
-            self.last_write = time()
-            file_name = save_frame(frame, emotion, new_score)
-            emotion_scores[str(new_score)] = file_name
+            # Cleanup and remove old score's frame
+            if len(emotion_scores.keys()) > 3:
+                lowest_score = str(lowest_score)
+                remove_frame(emotion_scores[lowest_score][0])
+                emotion_scores.pop(lowest_score)
 
-        # Cleanup and remove old score's frame
-        if len(emotion_scores.keys()) > 3:
-            lowest_score = str(lowest_score)
-            remove_frame(emotion_scores[lowest_score])
-            emotion_scores.pop(lowest_score)
+        if new_highscore:
+            with open(self.leaderboard_file, "w") as fp:
+                json.dump(self.leaderboard, fp, indent=4)
+
+        return new_highscore
 
 
 app = Flask(__name__)
@@ -84,8 +103,10 @@ if not camera.isOpened():
     print("Unable to open camera")
 
 leaderboard = Leaderboard("leaderboard.json")
-# leaderboard.generate_leaderboard_file()
-leaderboard.load_leaderboard()
+# leaderboard.generate_file()
+leaderboard.load()
+
+tracker = Tracker()
 
 
 @app.route("/")
@@ -111,20 +132,28 @@ def generate_frames():
                 b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
             )  # concat frame one by one and show result
 
+
 @app.route("/singleboard")
 def singleboard():
     scores = {
-        'Alice': 75.5,
-        'Bob': 92.3,
-        'Charlie': 88.0,
-        'David': 65.8,
-        'Eva': 78.9,
-        'Annie': 100.0,
-        'Nick': 10
+        "Alice": 75.5,
+        "Bob": 92.3,
+        "Charlie": 88.0,
+        "David": 65.8,
+        "Eva": 78.9,
+        "Annie": 100.0,
+        "Nick": 10,
     }
     sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
 
-    return render_template("singleboard.html", len = len(scores.keys()), names = list(sorted_scores.keys()), scores = list(sorted_scores.values()), emotion = "Happy")
+    return render_template(
+        "singleboard.html",
+        len=len(scores.keys()),
+        names=list(sorted_scores.keys()),
+        scores=list(sorted_scores.values()),
+        emotion="Happy",
+    )
+
 
 @app.route("/video")
 def video():
@@ -164,7 +193,7 @@ def update_emotions():
                     result["emotion"], emotion_history
                 )
 
-                leaderboard.handle_new_score(
+                tracker.handle_new_score(
                     frame,
                     emotion,
                     processed_emotions[emotion],
@@ -192,13 +221,18 @@ def process_raw_score(x):
     return 100 - 100 * np.exp(-scaling_factor * x)
 
 
+@socketio.on("save")
+def save_name_scores(data):
+    print(f"New Highscore for {data['data']}:", leaderboard.update_and_save(tracker, data["data"]))
+    tracker.clear()
+
+
 if __name__ == "__main__":
     try:
         socketio.start_background_task(update_emotions)
         socketio.run(app, debug=False, use_reloader=False, log_output=False)
     finally:
         camera.release()
-        leaderboard.save_leaderboard()
         print("\nApplication exited and camera released")
 
 

@@ -1,59 +1,34 @@
 {
-    "angry": {
-    },
+    "angry": {},
     "disgust": {},
     "fear": {
-        "83.90225713263725": [
-            "face_off/images/fear-83.90225713.jpg",
-            "John Smith"
+        "80.27339158959306": [
+            "face_off/static/images/fear-80.27339159.jpg",
+            "NOM"
         ]
     },
     "happy": {
-        "97.47310527884343": [
-            "face_off/images/happy-97.47310528.jpg",
-            "John Smith"
+        "97.09893494017751": [
+            "face_off/static/images/happy-97.09893494.jpg",
+            "NOM"
         ]
     },
     "neutral": {
-        "96.75706403274157": [
-            "face_off/images/neutral-96.75706403.jpg",
-            "John Smith"
+        "97.42106912068209": [
+            "face_off/static/images/neutral-97.42106912.jpg",
+            "NOM"
         ]
     },
     "sad": {
-        "90.90571165598972": [
-            "face_off/images/sad-90.90571166.jpg",
-            "John Smith"
+        "96.21001469912008": [
+            "face_off/static/images/sad-96.2100147.jpg",
+            "NOM"
         ]
     },
     "surprise": {
-    },
-    "happy": {
-        "97.37278604007554": [
-            "images/happy-97.37278604.jpg",
-            "a "
-        ],
-        "97.43394925037337": [
-            "images/happy-97.43394925.jpg",
-            "a "
-        ]
-    },
-    "neutral": {
-        "97.47060445086022": [
-            "images/neutral-97.47060445.jpg",
-            "a "
-        ]
-    },
-    "sad": {
-        "97.47432550151554": [
-            "images/sad-97.4743255.jpg",
-            "a "
-        ]
-    },
-    "surprise": {
-        "59.79572470613158": [
-            "images/surprise-59.79572471.jpg",
-            "a "
+        "94.49998353733122": [
+            "face_off/static/images/surprise-94.49998354.jpg",
+            "NOM"
         ]
     }
 }

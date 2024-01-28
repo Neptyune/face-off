@@ -1,71 +1,15 @@
 {
     "angry": {
-        "96.87780597790261": [
-            "images/angry-96.87780598.jpg",
-            "a knee"
-        ],
-        "97.46762146680858": [
-            "images/angry-97.46762147.jpg",
-            "a knee"
-        ]
     },
     "disgust": {},
     "fear": {
-        "88.64972889150977": [
-            "images/fear-88.64972889.jpg",
-            "John Smith"
-        ],
-        "97.3686975791955": [
-            "images/fear-97.36869758.jpg",
-            "a knee"
-        ],
-        "97.47460445583995": [
-            "images/fear-97.47460446.jpg",
-            "a knee"
-        ]
     },
     "happy": {
-        "97.45322165866367": [
-            "images/happy-97.45322166.jpg",
-            "John Smith"
-        ],
-        "97.46413604516162": [
-            "images/happy-97.46413605.jpg",
-            "a knee"
-        ]
     },
     "neutral": {
-        "97.4554948591638": [
-            "images/neutral-97.45549486.jpg",
-            "John Smith"
-        ],
-        "97.47282234417766": [
-            "images/neutral-97.47282234.jpg",
-            "a knee"
-        ]
     },
     "sad": {
-        "91.70619853787463": [
-            "images/sad-91.70619854.jpg",
-            "John Smith"
-        ],
-        "97.46857366737454": [
-            "images/sad-97.46857367.jpg",
-            "a knee"
-        ],
-        "97.47346400326695": [
-            "images/sad-97.473464.jpg",
-            "a knee"
-        ]
     },
     "surprise": {
-        "94.38476183875218": [
-            "images/surprise-94.38476184.jpg",
-            "a knee"
-        ],
-        "97.40917456054895": [
-            "images/surprise-97.40917456.jpg",
-            "a knee"
-        ]
     }
 }

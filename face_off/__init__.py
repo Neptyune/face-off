@@ -10,7 +10,7 @@ import cv2
 from time import time
 
 
-IMAGES_PATH = os.path.join("face_off", "images")
+IMAGES_PATH = os.path.join("face_off", "static", "images")
 EMOTIONS = ("angry", "disgust", "fear", "happy", "sad", "surprise", "neutral")
 
 
@@ -112,7 +112,7 @@ class Leaderboard:
     def get_images(self):
         images_map = {}
         for emotion in self.leaderboard:
-            images_map[emotion] = [x[0][9:] for x in self.leaderboard[emotion].values()]
+            images_map[emotion] = [x[0][16:] for x in self.leaderboard[emotion].values()]
         print(images_map)
         return images_map
 
@@ -125,7 +125,7 @@ if not camera.isOpened():
     print("Unable to open camera")
 
 leaderboard = Leaderboard("leaderboard.json")
-# leaderboard.generate_file()
+leaderboard.generate_file()
 leaderboard.load()
 
 tracker = Tracker()
@@ -142,7 +142,6 @@ def leaderboard_func():
     return render_template(
         "leaderboard.html",
         images_map=leaderboard.get_images(),
-        image='angry-93.63893275.jpg'
     )
 
 
@@ -258,10 +257,12 @@ def save_name_scores(data):
     )
     tracker.clear()
 
+
 @socketio.on("reset")
 def reset_scores():
     print("Reset")
     tracker.clear()
+
 
 if __name__ == "__main__":
     try:

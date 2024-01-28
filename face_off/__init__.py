@@ -10,7 +10,7 @@ import cv2
 from time import time
 
 
-IMAGES_PATH = "images"
+IMAGES_PATH = os.path.join("face_off", "images")
 EMOTIONS = ("angry", "disgust", "fear", "happy", "sad", "surprise", "neutral")
 
 
@@ -109,6 +109,13 @@ class Leaderboard:
 
         return new_highscore
 
+    def get_images(self):
+        images_map = {}
+        for emotion in self.leaderboard:
+            images_map[emotion] = [x[0][9:] for x in self.leaderboard[emotion].values()]
+        print(images_map)
+        return images_map
+
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -132,7 +139,11 @@ def index():
 # A leader board page with the top 10 scores
 @app.route("/leaderboard")
 def leaderboard_func():
-    return render_template("leaderboard.html")
+    return render_template(
+        "leaderboard.html",
+        images_map=leaderboard.get_images(),
+        image='angry-93.63893275.jpg'
+    )
 
 
 def generate_frames():
@@ -250,6 +261,8 @@ def save_name_scores(data):
 
 if __name__ == "__main__":
     try:
+        if not (os.path.exists(IMAGES_PATH) and os.path.isdir(IMAGES_PATH)):
+            os.makedirs(IMAGES_PATH)
         socketio.start_background_task(update_emotions)
         socketio.run(app, debug=False, use_reloader=False, log_output=False)
     finally:

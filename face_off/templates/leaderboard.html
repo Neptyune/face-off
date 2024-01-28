@@ -23,6 +23,15 @@
                     </div>
                 </div>
 
+                {%for i in range(0, 3)%}
+                <div
+                    class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
+            <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename=images_map['happy'][i]) }}"
+                            alt="supposed to be Nick" width="300" class="p-2">
+                </div>
+                {%endfor%}
+
+
                 <div
                     class="w-64 flex h-64 max-w-xs items-center overflow-hidden text-3xl text-center rounded-lg shadow-md bg-slate-700  hover:shadow-xl transition-shadow duration-300 ease-in-out">
                         <img class="rounded-md object-fill h-full" src="{{ url_for('static', filename='images/Nick.jpg') }}"

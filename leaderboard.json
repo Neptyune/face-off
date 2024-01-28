@@ -1,9 +1,5 @@
 {
     "angry": {
-        "93.6389327505317": [
-            "face_off/images/angry-93.63893275.jpg",
-            "John Smith"
-        ]
     },
     "disgust": {},
     "fear": {
@@ -31,9 +27,33 @@
         ]
     },
     "surprise": {
-        "97.24304619195453": [
-            "face_off/images/surprise-97.24304619.jpg",
-            "John Smith"
+    },
+    "happy": {
+        "97.37278604007554": [
+            "images/happy-97.37278604.jpg",
+            "a "
+        ],
+        "97.43394925037337": [
+            "images/happy-97.43394925.jpg",
+            "a "
+        ]
+    },
+    "neutral": {
+        "97.47060445086022": [
+            "images/neutral-97.47060445.jpg",
+            "a "
+        ]
+    },
+    "sad": {
+        "97.47432550151554": [
+            "images/sad-97.4743255.jpg",
+            "a "
+        ]
+    },
+    "surprise": {
+        "59.79572470613158": [
+            "images/surprise-59.79572471.jpg",
+            "a "
         ]
     }
 }

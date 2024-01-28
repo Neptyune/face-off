@@ -258,6 +258,10 @@ def save_name_scores(data):
     )
     tracker.clear()
 
+@socketio.on("reset")
+def reset_scores():
+    print("Reset")
+    tracker.clear()
 
 if __name__ == "__main__":
     try:

@@ -17,12 +17,14 @@
   <body class="bg-black flex text-white">
     <div class="flex flex-col h-screen">
       <div class="flex flex-row w-screen grow">
-        <div class="w-1/2 flex flex-col grow">
-          <div class="grow">
-            <div class="">
+        <div class="w-1/2 h-screen flex">
+          <div class="grid w-full grid-rows-3 grid-cols-1">
+            <div class="w-full">
               <div class="flex justify-center">
-                <p class="text-3xl pr-2" id="happy-score">0</p>
-                <p class="text-3xl pl-2" id="sad-score">0</p>
+                <p class="text-3xl pr-2" id="happy-score-high">0</p>
+                <p class="text-xl pr-2" id="happy-score">0</p>
+                <p class="text-xl pl-2" id="sad-score">0</p>
+                <p class="text-3xl pl-2" id="sad-score-high">0</p>
               </div>
               <canvas id="happy-chart"></canvas>
               <script>
@@ -63,27 +65,37 @@
                   var sadScore = document.getElementById("sad-score");
                   sadScore.textContent = data.emotion.sad.toFixed(2) + "%";
 
+                var surpriseScore = document.getElementById("happy-score-high");
+                surpriseScore.textContent =
+                  data.highscores.happy.toFixed(2) + "%";
+
+                var neutralScore = document.getElementById("sad-score-high");
+                neutralScore.textContent =
+                  data.highscores.sad.toFixed(2) + "%";
+
                   // Update the chart
                   happyData.push(data.emotion.happy.toFixed(2));
                   sadData.push(data.emotion.sad.toFixed(2));
                   happySadLabels.push("");
 
                   // Keep only the last 200 values
-                  if (happyData.length > 50) {
-                    happyData.shift();
-                    sadData.shift();
-                    happySadLabels.shift();
-                  }
+                  // if (happyData.length > 200) {
+                  //   happyData.shift();
+                  //   sadData.shift();
+                  //   happySadLabels.shift();
+                  // }
 
                   happyChart.update();
                 });
               </script>
             </div>
-          </div>
-          <div class="grow">
+
+            <div class="w-full">
             <div class="flex justify-center">
-              <p class="text-3xl pr-2" id="surprise-score">0</p>
-              <p class="text-3xl pl-2" id="neutral-score">0</p>
+              <p class="text-3xl pr-2" id="surprise-score-high">0</p>
+              <p class="text-xl pr-2" id="surprise-score">0</p>
+              <p class="text-xl pl-2" id="neutral-score">0</p>
+              <p class="text-3xl pl-2" id="neutral-score-high">0</p>
             </div>
             <canvas id="surprise-neutral-chart"></canvas>
             <script>
@@ -119,36 +131,114 @@
               socket.on("update_emotion", function (data) {
                 var surpriseScore = document.getElementById("surprise-score");
                 surpriseScore.textContent =
-                  data.emotion.surprise.toFixed(4) + "%";
+                  data.emotion.surprise.toFixed(2) + "%";
 
                 var neutralScore = document.getElementById("neutral-score");
                 neutralScore.textContent =
-                  data.emotion.neutral.toFixed(4) + "%";
+                  data.emotion.neutral.toFixed(2) + "%";
+
+                var surpriseScore = document.getElementById("surprise-score-high");
+                surpriseScore.textContent =
+                  data.highscores.surprise.toFixed(2) + "%";
+
+                var neutralScore = document.getElementById("neutral-score-high");
+                neutralScore.textContent =
+                  data.highscores.neutral.toFixed(2) + "%";
 
                 // Update the chart
                 surpriseData.push(data.emotion.surprise);
                 neutralData.push(data.emotion.neutral);
                 surpriseNeutralLabels.push("");
 
-                // Keep only the last 100 values
-                if (surpriseData.length > 100) {
-                  surpriseData.shift();
-                  neutralData.shift();
-                  surpriseNeutralLabels.shift();
-                }
-
-                // console.log(data.highscores);
+                // Keep only the last 200 values
+                // if (surpriseData.length > 200) {
+                //   surpriseData.shift();
+                //   neutralData.shift();
+                //   surpriseNeutralLabels.shift();
+                // }
 
                 surpriseNeutralChart.update();
               });
             </script>
+            </div>
+
+            <div class="w-full">
+            <div class="flex justify-center">
+              <p class="text-3xl pr-2" id="angry-score-high">0</p>
+              <p class="text-xl pr-2" id="angry-score">0</p>
+              <p class="text-xl pl-2" id="fear-score">0</p>
+              <p class="text-3xl pl-2" id="fear-score-high">0</p>
+            </div>
+            <canvas id="angry-fear-chart"></canvas>
+            <script>
+              var angryData = [];
+              var fearData = [];
+              var angryFearLabels = [];
+              var angryFearChart = new Chart(
+                document.getElementById("angry-fear-chart"),
+                {
+                  type: "line",
+                  data: {
+                    labels: surpriseNeutralLabels,
+                    datasets: [
+                      {
+                        label: "Angry",
+                        data: angryData,
+                        fill: false,
+                        borderColor: "rgba(255, 159, 64)",
+                        tension: 0.1,
+                      },
+                      {
+                        label: "Fear",
+                        data: fearData,
+                        fill: false,
+                        borderColor: 'rgba(54, 162, 235)',
+                        tension: 0.1,
+                      },
+                    ],
+                  },
+                },
+              );
+
+              socket.on("update_emotion", function (data) {
+                var surpriseScore = document.getElementById("angry-score");
+                surpriseScore.textContent =
+                  data.emotion.angry.toFixed(2) + "%";
+
+                var neutralScore = document.getElementById("fear-score");
+                neutralScore.textContent =
+                  data.emotion.fear.toFixed(2) + "%";
+
+                var surpriseScore = document.getElementById("angry-score-high");
+                surpriseScore.textContent =
+                  data.highscores.angry.toFixed(2) + "%";
+
+                var neutralScore = document.getElementById("fear-score-high");
+                neutralScore.textContent =
+                  data.highscores.fear.toFixed(2) + "%";
+
+                // Update the chart
+                angryData.push(data.emotion.angry);
+                fearData.push(data.emotion.fear);
+                angryFearLabels.push("");
+
+                angryFearChart.update();
+              });
+            </script>
+            </div>
+
           </div>
         </div>
-        <div class="w-1/2 flex grow">
+        <!-- Video -->
+        <div class="w-1/2 flex grow flex-col">
+          <h1 class="text-5xl text-center w-full font-bold">🤪 Face OFF!!! 😱</h1>
           <img class="w-full my-auto" src="/video" alt="video feed" />
         </div>
       </div>
       <div class="w-full h-12 justify-between flex flex-row">
+        <div>
+          <input type="text" id="name" name="name" class="bg-black border-2 border-white rounded-md" placeholder="Nickname..."/>
+        </div>
         <button
           class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3"
           id="saveButton"
@@ -161,12 +251,25 @@
           document
             .getElementById("saveButton")
             .addEventListener("click", function () {
-              socket.emit("save", { data: "John Smith" });
+                var inputData = document.getElementById("name").value;
+                socket.emit("save", { data: inputData });
+                location.reload();
             });
         </script>
-        <button class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3">
+        <button class="bg-gray-800 py-1 px-1 m-1 rounded-md w-1/3"
+          id="resetButton" >
           Reset
         </button>
+        <script type="text/javascript" charset="utf-8">
+          var socket = io();
+
+          document
+            .getElementById("resetButton")
+            .addEventListener("click", function () {
+                socket.emit("reset");
+                location.reload();
+            });
+        </script>
       </div>
     </div>
   </body>

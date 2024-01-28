@@ -69,7 +69,7 @@
                   happySadLabels.push("");
 
                   // Keep only the last 200 values
-                  if (happyData.length > 50) {
+                  if (happyData.length > 200) {
                     happyData.shift();
                     sadData.shift();
                     happySadLabels.shift();
@@ -79,8 +79,6 @@
                 });
               </script>
             </div>
-          </div>
-          <div class="grow">
             <div class="flex justify-center">
               <p class="text-3xl pr-2" id="surprise-score">0</p>
               <p class="text-3xl pl-2" id="neutral-score">0</p>
@@ -130,8 +128,8 @@
                 neutralData.push(data.emotion.neutral);
                 surpriseNeutralLabels.push("");
 
-                // Keep only the last 100 values
-                if (surpriseData.length > 100) {
+                // Keep only the last 200 values
+                if (surpriseData.length > 200) {
                   surpriseData.shift();
                   neutralData.shift();
                   surpriseNeutralLabels.shift();
